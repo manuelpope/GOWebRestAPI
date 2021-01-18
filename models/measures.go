@@ -1,4 +1,4 @@
-package main
+package models
 
 //Metric model
 type Metric struct {

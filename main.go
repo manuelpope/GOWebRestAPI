@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"./models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -13,12 +14,12 @@ var db *gorm.DB
 var err error
 
 func main() {
-	m1 := Metric{Moisture: 30.0, Temp: 10.0}
+	m1 := models.Metric{Moisture: 30.0, Temp: 10.0}
 	db, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if db == nil {
 		panic("failed to connect database")
 	}
-	db.AutoMigrate(&Metric{})
+	db.AutoMigrate(&models.Metric{})
 	fmt.Println(m1)
 	db.Create(&m1)
 
@@ -38,7 +39,7 @@ func main() {
 
 //GetMetricsController controller for retrieve all data Metric
 func GetMetricsController(c *gin.Context) {
-	var metrics []Metric
+	var metrics []models.Metric
 	if err := db.Find(&metrics).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
@@ -50,7 +51,7 @@ func GetMetricsController(c *gin.Context) {
 //PostMetricCreate controller for create a new register metric
 func PostMetricCreate(c *gin.Context) {
 
-	var metric Metric
+	var metric models.Metric
 	if c.BindJSON(&metric) == nil {
 		db.Create(&metric)
 		c.JSON(200, metric)
@@ -62,8 +63,8 @@ func PostMetricCreate(c *gin.Context) {
 //DeleteMetricCreate controller for create a new register metric
 func DeleteMetricCreate(c *gin.Context) {
 
-	var listMetric []Metric
-	var listID List
+	var listMetric []models.Metric
+	var listID models.List
 
 	if c.BindJSON(&listID) == nil {
 		if db.Find(&listMetric, listID.ListID); len(listMetric) != 0 {
@@ -81,7 +82,7 @@ func DeleteMetricCreate(c *gin.Context) {
 //UpdateMetricCreate controller for create a new register metric
 func UpdateMetricCreate(c *gin.Context) {
 
-	var metric Metric
+	var metric models.Metric
 	if c.BindJSON(&metric) == nil {
 
 		db.Save(&metric)
