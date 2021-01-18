@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"./controller"
 	"./models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
@@ -23,29 +24,20 @@ func main() {
 	fmt.Println(m1)
 	db.Create(&m1)
 
+	c1 := controller.MetricHandler{Db: db}
+
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.String(200, "Hello running Server Iot central")
 	})
 
-	r.GET("/metricsgetlist", GetMetricsController)
+	r.GET("/metricsgetlist", c1.GetMetricsController)
 
 	r.POST("/createmetric", PostMetricCreate)
 	r.POST("/deletemetric", DeleteMetricCreate)
 	r.POST("/updatemetric", UpdateMetricCreate)
 
 	r.Run()
-}
-
-//GetMetricsController controller for retrieve all data Metric
-func GetMetricsController(c *gin.Context) {
-	var metrics []models.Metric
-	if err := db.Find(&metrics).Error; err != nil {
-		c.AbortWithStatus(404)
-		fmt.Println(err)
-	} else {
-		c.JSON(200, metrics)
-	}
 }
 
 //PostMetricCreate controller for create a new register metric
