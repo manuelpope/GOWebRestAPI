@@ -12,8 +12,6 @@ function App() {
 <Switch>
 <Route exact path='/' component={HomePage}></Route>
 <Route exact path='/Crops' component={ListDividers}></Route>
-
-
 </Switch>
 
 
