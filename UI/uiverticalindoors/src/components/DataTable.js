@@ -1,8 +1,13 @@
 import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
+import  { useState,useEffect } from 'react';
 
-const DataTable =()=>{
 
+
+const DataTable =()=>
+{
+
+  const [dataTable,setDataGrid] = useState([]);
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'firstName', headerName: 'First name', width: 130 },
@@ -35,13 +40,37 @@ const rows = [
   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ];
+const url = "http://192.168.0.66:8080/metricsgetlist";
+//mover 2 services TODO 
+useEffect(() => {
 
+
+
+fetch(url,{
+  method: "Get", 
+  mode: 'no-cors',
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8'
+  }})
+    .then(async (res) =>
+      { const data = await res.json();
+        setDataGrid({data});
+      }
+      )
+    .catch(error => console.log(error));
+    console.log("effect///")
+
+},[dataTable]);
 
 return (
   <div style={{ height: 400, width: '100%' }}>
     <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+    <p>
+      {(dataTable.length>0)&& dataTable}
+    </p>
   </div>
 );
+
 };
 export default DataTable;
  
