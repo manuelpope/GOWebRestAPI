@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.css';
+import {Switch,Route, BrowserRouter} from 'react-router-dom';
+import ListDividers from './components/ListDividers';
+import HomePage from './components/HomePage';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hoola cuadrando los routers</h1>
+
+      <BrowserRouter>
+<Switch>
+<Route exact path='/' component={HomePage}></Route>
+<Route exact path='/Crops' component={ListDividers}></Route>
+
+
+</Switch>
+
+
+</BrowserRouter>
+
     </div>
   );
 }
